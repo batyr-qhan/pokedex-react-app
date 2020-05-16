@@ -96,7 +96,8 @@ class App extends Component {
             <div>
               <Search
                 placeholder="input search text"
-                onSearch={this.onSearch}
+                // onSearch={this.onSearch}
+                onChange={this.onSearch}
                 enterButton
               />
             </div>
