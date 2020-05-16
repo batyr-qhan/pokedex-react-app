@@ -15,16 +15,15 @@ class App extends Component {
     this.state = {
       pokemons: [],
       length: undefined,
-      pokemonsCopy: [],
-      lengthCopy: undefined,
       minValue: 0,
       maxValue: 10,
+      search: '',
     };
   }
 
-  onShowSizeChange = (current, pageSize) => {
-    console.log(current, pageSize);
-  };
+  // onShowSizeChange = (current, pageSize) => {
+  //   console.log(current, pageSize);
+  // };
 
   handleChange = (value, pageSize) => {
     // console.log(pageSize);
@@ -42,20 +41,10 @@ class App extends Component {
   };
 
   onSearch = value => {
-    const { pokemons } = this.state;
+    console.log(value.target.value);
 
     this.setState({
-      pokemons: this.state.pokemonsCopy,
-      length: this.state.lengthCopy,
-    });
-
-    pokemons.forEach(pokemon => {
-      if (value === pokemon.name) {
-        this.setState({
-          pokemons: pokemons.filter(word => word.name === value),
-          length: pokemons.filter(word => word.name === value).length,
-        });
-      }
+      search: value.target.value,
     });
   };
 
@@ -66,14 +55,16 @@ class App extends Component {
         this.setState({
           pokemons: allpokemon.results,
           length: allpokemon.results.length,
-          pokemonsCopy: allpokemon.results,
-          lengthCopy: allpokemon.results.length,
         }),
       );
   }
 
   render() {
-    const { pokemons } = this.state;
+
+    let filteredPokemons = this.state.pokemons.filter(pokemon => {
+      return pokemon.name.indexOf(this.state.search) !== -1;
+    });
+
     return (
       <Layout className="layout">
         <Header>
@@ -111,7 +102,7 @@ class App extends Component {
             </div>
           </div>
           <div className="site-layout-content">
-            {pokemons
+            {filteredPokemons
               .slice(this.state.minValue, this.state.maxValue)
               .map(pokemon => (
                 <Card
